@@ -12,7 +12,7 @@ const getCustomerByIdController = async (req, res) => {
         if(customers.length === 0) {
             return res.sendStatus(404);
         }
-        res.send(customers)
+        res.send(customers[0])
     } catch (err) {
         console.error(err);
         res.status(500).send("Houve um erro ao buscar o usuário!");
