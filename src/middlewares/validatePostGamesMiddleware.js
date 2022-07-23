@@ -4,7 +4,7 @@ import { connection } from "../database/database.js";
 const validatePostGamesMiddleware = async (req, res, next) => {
     const { name, image } = req.body;
     const stockTotal = Number(req.body.stockTotal)
-    const pricePerDay = Number(req.body.pricePerDay)
+    const pricePerDay = Number(req.body.pricePerDay) * 100;
     const categoryId = Number(req.body.categoryId)
 
     try {
@@ -20,7 +20,6 @@ const validatePostGamesMiddleware = async (req, res, next) => {
                 return res.sendStatus(409);
             }
             res.locals.gameData = { name, image, stockTotal, pricePerDay, categoryId };
-            console.log(res.locals.gameData)
             next();
         } catch (err) {
             console.error(err);
