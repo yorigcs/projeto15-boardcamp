@@ -11,18 +11,15 @@ const validatePostGamesMiddleware = async (req, res, next) => {
         await rentalSchema.validateAsync({ customerId, gameId, daysRented });
 
         try {
-            const { rows: isCustomerRegistered } = await connection.query('SELECT * FROM customers WHERE id = $1', [customerId]);
-            if (isCustomerRegistered.length === 0) {
-                return res.sendStatus(400);
-            }
-            const { rows: isGameRegistered } = await connection.query('SELECT * FROM games WHERE id = $1', [gameId]);
-            if (isGameRegistered.length === 0) {
-                return res.sendStatus(400);
-            }
+            const { rows: customer } = await connection.query('SELECT * FROM customers WHERE id = $1', [customerId]);
+            if (customer.length === 0) return res.sendStatus(400);
+
+            const { rows: game } = await connection.query('SELECT * FROM games WHERE id = $1', [gameId]);
+            if (game.length === 0) return res.sendStatus(400);
+
             const { rows: currentRentedGames} = await connection.query('SELECT COUNT FROM rentals WHERE "gameId" = $1', [gameId]);
-            if(currentRentedGames[0].gameId >= isGameRegistered[0].stockTotal) {
-                return res.sendStatus(400);
-            }
+            if(currentRentedGames[0].gameId >= game[0].stockTotal) return res.sendStatus(400);
+            
             res.locals.rentalData = { customerId,gameId,daysRented};
             next();
         } catch (err) {
