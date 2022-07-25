@@ -5,8 +5,8 @@ const validateDeleteRental = async (req, res, next) => {
     const { id } = req.params;
     const query = `
     SELECT *
-    FROM rentals r 
-    WHERE r.id = $1
+    FROM rentals
+    WHERE id = $1
     `
     try {
         const { rows: rentalData } = await connection.query(query, [id]);
@@ -15,7 +15,7 @@ const validateDeleteRental = async (req, res, next) => {
             return res.sendStatus(404)
         }
         //is finished?
-        if (rentalData[0].returnDate) {
+        if (!rentalData[0].returnDate) {
             return res.sendStatus(400)
         }
         next();
