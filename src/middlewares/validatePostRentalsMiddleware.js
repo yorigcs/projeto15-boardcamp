@@ -26,9 +26,9 @@ const validatePostRentalsMiddleware = async (req, res, next) => {
 
             const rentDate = dayjs().format('YYYY-MM-DD');
             const originalPrice = daysRented * game[0].pricePerDay;
-            const returnData = null;
+            const returnDate = null;
             const delayFee = null;
-            res.locals.rentalData = { customerId, gameId, daysRented, rentDate, originalPrice, returnData, delayFee };
+            res.locals.rentalData = { customerId, gameId, daysRented, rentDate, originalPrice, returnDate, delayFee };
             next();
         } catch (err) {
             console.error(err);
