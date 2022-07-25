@@ -9,7 +9,7 @@ const returnGameController = async (req, res) => {
     let delayFee = null;
     //check if has delayFee
     if (daysDiff > returnGameData.daysRented) {
-        delayFee = daysDiff - returnGameData.daysRented;
+        delayFee = (daysDiff - returnGameData.daysRented) * returnGameData.pricePerDay;
     }
     try {
         await connection.query(`UPDATE rentals SET "delayFee" = $1, "returnDate" = $2 WHERE id = $3`, [delayFee, today.format('YYYY-MM-DD'), returnGameData.id])
